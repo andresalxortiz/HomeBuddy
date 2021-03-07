@@ -75,7 +75,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'homebuddy_backend.wsgi.application'
 
 CORS_ORIGIN_WHITELIST = [
-    "https://localhost:19000"
+    "exp://192.168.0.247:19000"
 ]
 
 # Database
@@ -85,7 +85,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'homebuddy',
-        'HOST': 'mongodb+srv://homebuddy:homebuddy1@cluster0.o9fmr.mongodb.net/homebuddy?retryWrites=true&w=majority',
+        'HOST': 'mongodb+srv://admin:admin123@cluster0.o9fmr.mongodb.net/homebuddy?retryWrites=true&w=majority',
         'USERNAME': 'homebuddy',
         'PASSWORD': 'homebuddy1',
     }
