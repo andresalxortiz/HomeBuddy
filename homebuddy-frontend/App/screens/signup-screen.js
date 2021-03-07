@@ -52,14 +52,26 @@ const styles = StyleSheet.create({
   },
 });
 export function Signup({ navigation }) {
-  const { control, handleSubmit, errors, setValue } = useForm();
+  const { control, handleSubmit, errors, register, setError } = useForm({
+    defaultValues: {
+      firstName: "John",
+      lastName: "Doe",
+      userName: "johnydoe",
+      email: "email@email.com",
+      password: "P@ssw0word!",
+    },
+  });
 
   const firstNameRef = React.useRef();
   const lastNameRef = React.useRef();
   const userNameRef = React.useRef();
   const emailRef = React.useRef();
   const passwordRef = React.useRef();
+
+  const [submitting, setSubmitting] = React.useState(false);
+
   // handle the /login endpoint in the future
+  // not using atm
   const onSubmit = (d) => {
     console.log(d);
   };
@@ -93,7 +105,7 @@ export function Signup({ navigation }) {
                   onChangeText={(value) => {
                     props.onChange(value);
                   }}
-                  ref={firstNameRef}
+                  ref={register(firstNameRef, { required: "required" })}
                 />
               )}
             />
@@ -120,7 +132,7 @@ export function Signup({ navigation }) {
                   onChangeText={(value) => {
                     props.onChange(value);
                   }}
-                  ref={lastNameRef}
+                  ref={register(lastNameRef, { required: "required" })}
                 />
               )}
             />
@@ -131,7 +143,7 @@ export function Signup({ navigation }) {
           <View>
             <Text style={styles.label}>Username</Text>
             <Controller
-              name="email"
+              name="userName"
               control={control}
               rules={{ required: "This is required" }}
               onFocus={() => {
@@ -144,7 +156,7 @@ export function Signup({ navigation }) {
                   onChangeText={(value) => {
                     props.onChange(value);
                   }}
-                  ref={userNameRef}
+                  ref={register(userNameRef, { required: "required" })}
                 />
               )}
             />
@@ -165,7 +177,7 @@ export function Signup({ navigation }) {
                   onChangeText={(value) => {
                     props.onChange(value);
                   }}
-                  ref={emailRef}
+                  ref={register(emailRef, { required: "required" })}
                 />
               )}
             />
@@ -176,7 +188,21 @@ export function Signup({ navigation }) {
             <Controller
               name="password"
               control={control}
-              rules={{ required: "This is required" }}
+              rules={{
+                required: "This is required",
+                minLength: { value: 8, message: "must be at min 8 chars long" },
+                validate: (value) => {
+                  return (
+                    [
+                      /[a-z]/,
+                      /[A-Z]/,
+                      /[0-9]/,
+                      /[^a-zA-Z0-9]/,
+                    ].every((pattern) => pattern.test(value)) ||
+                    "must include lower, upper, number, and special chars"
+                  );
+                },
+              }}
               onFocus={() => {
                 passwordRef.current.focus;
               }}
@@ -187,7 +213,7 @@ export function Signup({ navigation }) {
                   onChangeText={(value) => {
                     props.onChange(value);
                   }}
-                  ref={passwordRef}
+                  ref={register(passwordRef, { required: "required" })}
                 />
               )}
             />
@@ -201,10 +227,38 @@ export function Signup({ navigation }) {
             color="white"
             title="Signup"
             onPress={() => {
-              handleSubmit(onSubmit);
-              setValue("");
-              navigation.push("PetName");
+              handleSubmit(async (formData) => {
+                setSubmitting(true);
+                setError(_, {});
+                // token can be used for a ref later on
+
+                const response = await fetch("/api/signup", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    firstName: formData.firstName,
+                    lastName: formData.lastName,
+                    userName: formData.userName,
+                    email: formData.email,
+                    password: formData.password,
+                  }),
+                });
+                const data = await response.json();
+
+                // if we run into errors lets keep them in an object
+                if (data.errors) {
+                  setError(_, errors);
+                } else {
+                  return;
+                }
+                // this should push to PetName onboarding screen
+                await navigation.push("PetName");
+                setSubmitting(false);
+              });
             }}
+            disabled={submitting}
           />
         </View>
       </View>
