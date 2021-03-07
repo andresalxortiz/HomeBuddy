@@ -8,29 +8,31 @@ from rest_framework import generics
 from rest_framework import mixins
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
-from flask import Flask 
-from flask_cors import CORS 
-import pymongo
+
+from django.http import HttpResponse
+from django.shortcuts import render
+
 # Create your views here.
+import pymongo
+from pymongo import MongoClient
+
 
 class PetViewSet(viewsets.ModelViewSet):
     queryset = Pet.objects.all()
     serializer_class = PetSerializer
 
+    print("HEY QUERRYYYYL ")
+    print(queryset)
 
-connection_url = 'mongodb+srv://admin:admin123@cluster0.o9fmr.mongodb.net/homebuddy?retryWrites=true&w=majority'
-app = Flask(__name__) 
-client = pymongo.MongoClient(connection_url) 
-  
-# Database 
-Database = client.get_database('homebuddy') 
-# Table 
+    dBName = "homebuddy"
+    collectionName = "homebuddy"
 
-@app.route('/insert-one/<name>/<id>/', methods=['POST']) 
-def insertOne(name, id): 
-    queryObject = { 
-        'Name': name, 
-        'ID': id
-    } 
-    query = SampleTable.insert_one(queryObject) 
-    return "Query inserted...!!!"
+    client = MongoClient(
+        "mongodb+srv://admin:admin123@cluster0.o9fmr.mongodb.net/homebuddy?retryWrites=true&w=majority")
+
+    DB = client[dBName]
+    collection = DB[collectionName]
+
+    datas = list(Pet.objects.values())
+
+    data = collection.insert_many(datas)
