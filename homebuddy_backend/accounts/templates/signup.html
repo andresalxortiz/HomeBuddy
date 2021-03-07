@@ -1,0 +1,9 @@
+{% extends "./layout/signup.html" %}
+{% load static %}
+ 
+{% block content %}
+    <h1>Signup</h1>
+    <form action="/homebuddy/signup/" method="post">
+        {{ form }}
+    </form>
+{% endblock content %}
