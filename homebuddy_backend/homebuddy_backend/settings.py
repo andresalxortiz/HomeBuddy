@@ -77,8 +77,11 @@ WSGI_APPLICATION = 'homebuddy_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': 'homebuddy',
+        'HOST': 'mongodb+srv://homebuddy:homebuddy1@cluster0.o9fmr.mongodb.net/homebuddy?retryWrites=true&w=majority',
+        'USERNAME': 'homebuddy',
+        'PASSWORD': 'homebuddy1',
     }
 }
 
