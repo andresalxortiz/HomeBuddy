@@ -27,8 +27,7 @@ class PetViewSet(viewsets.ModelViewSet):
     dBName = "homebuddy"
     collectionName = "homebuddy"
 
-    client = MongoClient(
-        "mongodb+srv://admin:admin123@cluster0.o9fmr.mongodb.net/homebuddy?retryWrites=true&w=majority")
+    client = MongoClient("COPY THE DB STING")
 
     DB = client[dBName]
     collection = DB[collectionName]
