@@ -56,6 +56,7 @@ export function Signup({ navigation }) {
 
   const firstNameRef = React.useRef();
   const lastNameRef = React.useRef();
+  const userNameRef = React.useRef();
   const emailRef = React.useRef();
   const passwordRef = React.useRef();
   // handle the /login endpoint in the future
@@ -83,7 +84,7 @@ export function Signup({ navigation }) {
               control={control}
               rules={{ required: "This is required" }}
               onFocus={() => {
-                emailRef.current.focus;
+                firstNameRef.current.focus;
               }}
               render={(props) => (
                 <TextInput
@@ -105,7 +106,7 @@ export function Signup({ navigation }) {
               control={control}
               rules={{ required: "This is required" }}
               onFocus={() => {
-                passwordRef.current.focus;
+                lastNameRef.current.focus;
               }}
               render={(props) => (
                 <TextInput
@@ -127,6 +128,27 @@ export function Signup({ navigation }) {
         </View>
 
         <View style={{ paddingLeft: 15, paddingRight: 15 }}>
+          <View>
+            <Text style={styles.label}>Username</Text>
+            <Controller
+              name="email"
+              control={control}
+              rules={{ required: "This is required" }}
+              onFocus={() => {
+                userNameRef.current.focus;
+              }}
+              render={(props) => (
+                <TextInput
+                  {...props}
+                  style={[styles.input, styles.border]}
+                  onChangeText={(value) => {
+                    props.onChange(value);
+                  }}
+                  ref={userNameRef}
+                />
+              )}
+            />
+          </View>
           <View>
             <Text style={styles.label}>Email</Text>
             <Controller
@@ -181,7 +203,7 @@ export function Signup({ navigation }) {
             onPress={() => {
               handleSubmit(onSubmit);
               setValue("");
-              navigation.push("Signup");
+              navigation.push("PetName");
             }}
           />
         </View>
