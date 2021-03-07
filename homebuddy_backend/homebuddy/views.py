@@ -8,69 +8,29 @@ from rest_framework import generics
 from rest_framework import mixins
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
+from flask import Flask 
+from flask_cors import CORS 
+import pymongo
 # Create your views here.
 
 class PetViewSet(viewsets.ModelViewSet):
     queryset = Pet.objects.all()
     serializer_class = PetSerializer
 
-'''
-class PetViewSet(viewsets.ViewSet):
-    def list(self, request):
-        petnames = Pet.objects.all()
-        serializer = PetSerializer(petnames, many=True)
-        return Response(serializer.data)
 
-    def create(self, request):
-        serializer = PetSerializer(data=request.data)
-        if serializer.is_valid():
-            seralizer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+connection_url = 'mongodb+srv://admin:admin123@cluster0.o9fmr.mongodb.net/homebuddy?retryWrites=true&w=majority'
+app = Flask(__name__) 
+client = pymongo.MongoClient(connection_url) 
+  
+# Database 
+Database = client.get_database('homebuddy') 
+# Table 
 
-    def retrieve(self, request, pk=None):
-        queryset = Pet.objects.all()
-        petname = get_object_or_404(queryset, pk=pk)
-        serializer = PetSerializer(petname)
-        return Response(serializer.data)
-
-    def update(self, request, pk=None):
-        petname = Pet.objects.get(pk=pk)
-        serializer = PetSerializer(data=request.data)
-        if serializer.is_valid():
-            seralizer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def destroy(self, request, pk=None):
-        petname = Pet.objects.get(pk=pk)
-        petname.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-'''
-
-
-'''
-class PetList(generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
-    queryset = Pet.objects.all()
-    serializer_class = PetSerializer
-
-    def get(self, request):
-        return self.list(request)
-
-    def post(self, request):
-        return self.create(request)
-
-class PetDetails(generics.GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
-    queryset = Pet.objects.all()
-    serializer_class = PetSerializer
-    lookup_field = 'id'
-
-    def get(self, request, id):
-        return self.retrieve(request, id=id)
-
-    def put(self, request, id):
-        return self.update(request, id=id)
-
-    def delete(self, request, id):
-        return self.destroy(request, id=id)
-'''
+@app.route('/insert-one/<name>/<id>/', methods=['POST']) 
+def insertOne(name, id): 
+    queryObject = { 
+        'Name': name, 
+        'ID': id
+    } 
+    query = SampleTable.insert_one(queryObject) 
+    return "Query inserted...!!!"

@@ -79,9 +79,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'homebuddy',
-        'HOST': 'mongodb+srv://homebuddy:homebuddy1@cluster0.o9fmr.mongodb.net/homebuddy?retryWrites=true&w=majority',
-        'USERNAME': 'homebuddy',
-        'PASSWORD': 'homebuddy1',
+        'HOST': 'mongodb+srv://admin:admin123@cluster0.o9fmr.mongodb.net/homebuddy?retryWrites=true&w=majority',
+        'USERNAME': 'admin',
+        'PASSWORD': 'admin123',
     }
 }
 
