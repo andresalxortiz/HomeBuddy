@@ -75,7 +75,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'homebuddy_backend.wsgi.application'
 
 CORS_ORIGIN_WHITELIST = [
-    # Need to insert different IP Address here
+    # Need to insert app simulation's IP Address here
     "exp://localhost:19000"
 ]
 
@@ -86,7 +86,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'homebuddy',
-        'HOST': 'mongodb+srv://admin:admin123@cluster0.o9fmr.mongodb.net/homebuddy?retryWrites=true&w=majority',
+        'HOST': '(INSERT HERE)',
         'USERNAME': 'admin',
         'PASSWORD': 'admin123',
     }
