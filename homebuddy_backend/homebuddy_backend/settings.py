@@ -75,7 +75,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'homebuddy_backend.wsgi.application'
 
 CORS_ORIGIN_WHITELIST = [
-    "exp://192.168.0.247:19000"
+    # Need to insert different IP Address here
+    "exp://localhost:19000"
 ]
 
 # Database
