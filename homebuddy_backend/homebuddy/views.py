@@ -50,56 +50,29 @@ class PetViewSet(viewsets.ViewSet):
         serializer = PetSerializer(petnames, many=True)
         return Response(serializer.data)
 
-    def create(self, request):
-        serializer = PetSerializer(data=request.data)
-        if serializer.is_valid():
-            seralizer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+from django.http import HttpResponse
+from django.shortcuts import render
 
-    def retrieve(self, request, pk=None):
-        queryset = Pet.objects.all()
-        petname = get_object_or_404(queryset, pk=pk)
-        serializer = PetSerializer(petname)
-        return Response(serializer.data)
-
-    def update(self, request, pk=None):
-        petname = Pet.objects.get(pk=pk)
-        serializer = PetSerializer(data=request.data)
-        if serializer.is_valid():
-            seralizer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def destroy(self, request, pk=None):
-        petname = Pet.objects.get(pk=pk)
-        petname.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-'''
+# Create your views here.
+import pymongo
+from pymongo import MongoClient
 
 
-'''
-class PetList(generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
+class PetViewSet(viewsets.ModelViewSet):
     queryset = Pet.objects.all()
     serializer_class = PetSerializer
 
-    def get(self, request):
-        return self.list(request)
+    print("HEY QUERRYYYYL ")
+    print(queryset)
 
-    def post(self, request):
-        return self.create(request)
+    dBName = "homebuddy"
+    collectionName = "homebuddy"
 
-class PetDetails(generics.GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
-    queryset = Pet.objects.all()
-    serializer_class = PetSerializer
-    lookup_field = 'id'
+    client = MongoClient("COPY THE DB STING")
 
-    def get(self, request, id):
-        return self.retrieve(request, id=id)
+    DB = client[dBName]
+    collection = DB[collectionName]
 
-    def put(self, request, id):
-        return self.update(request, id=id)
+    datas = list(Pet.objects.values())
 
-    def delete(self, request, id):
-        return self.destroy(request, id=id)
-'''
+    data = collection.insert_many(datas)
