@@ -7,7 +7,7 @@ from pymongo import MongoClient
 dBName = "homebuddy"
 collectionName= "homebuddy"
 
-client = MongoClient("COPY PASTE HERE")
+client = MongoClient("mongodb+srv://admin:admin123@cluster0.o9fmr.mongodb.net/homebuddy?retryWrites=true&w=majority")
 
 DB = client[dBName]
 collection = DB[collectionName]

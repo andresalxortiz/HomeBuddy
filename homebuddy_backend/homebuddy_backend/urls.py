@@ -15,14 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from homebuddy.views import PetViewSet# PetList, PetDetails pet_details
+from homebuddy.views import PetViewSet, MainPage
 from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken.views import obtain_auth_token
 
 router = DefaultRouter()
 router.register('petnames', PetViewSet, basename='petnames')
 urlpatterns = [
+    path('', MainPage, name="home"),
+    path('accounts/', include('accounts.urls')),
+    path('auth/', obtain_auth_token),
+    path('homebuddy/', include(router.urls)),
     path('admin/', admin.site.urls),
-    #path('petnames/', PetList.as_view()),
-    #path('petnames/<int:id>/', PetDetails.as_view()),
-    path('', include(router.urls))
 ]
