@@ -31,18 +31,6 @@ const styles = StyleSheet.create({
 });
 
 export function Home({ navigation }) {
-  const { control, handleSubmit, errors, setValue } = useForm();
-
-  const firstNameRef = React.useRef();
-  const lastNameRef = React.useRef();
-  const emailRef = React.useRef();
-  const passwordRef = React.useRef();
-  // handle the /login endpoint in the future
-  const onSubmit = (d) => {
-    console.log(d);
-  };
-
-  console.log("errors", errors);
   return (
     <View style={styles.container}>
       <Text>PawPals</Text>
@@ -52,18 +40,14 @@ export function Home({ navigation }) {
           <Button
             title="Signup"
             color="white"
-            onPress={() =>
-              navigation.push("Signup", { name: "Signup for Home Buddy" })
-            }
+            onPress={() => navigation.navigate("Signup")}
           />
         </View>
         <View style={styles.button}>
           <Button
             title="Login"
             color="white"
-            onPress={() =>
-              navigation.push("Login", { name: "Login for Home Buddy" })
-            }
+            onPress={() => navigation.navigate("Login")}
           />
         </View>
       </View>

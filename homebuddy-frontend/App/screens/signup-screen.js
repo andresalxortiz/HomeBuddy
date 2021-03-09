@@ -74,6 +74,7 @@ export function Signup({ navigation }) {
   // not using atm
   const onSubmit = (d) => {
     console.log(d);
+    navigation.navigate("Species");
   };
 
   console.log("errors", errors);
@@ -254,11 +255,12 @@ export function Signup({ navigation }) {
                   return;
                 }
                 // this should push to PetName onboarding screen
-                await navigation.push("PetName");
                 setSubmitting(false);
               });
+              navigation.navigate("Species");
+              // onPress={handleSubmit(onSubmit)}
             }}
-            disabled={submitting}
+            // disabled={submitting}
           />
         </View>
       </View>

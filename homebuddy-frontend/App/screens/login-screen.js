@@ -46,7 +46,12 @@ const styles = StyleSheet.create({
 });
 
 export function Login({ navigation }) {
-  const { control, handleSubmit, errors, setValue } = useForm();
+  const { control, handleSubmit, errors, setValue } = useForm({
+    defaultValues: {
+      email: "",
+      password: "helo",
+    },
+  });
   const passwordRef = React.useRef();
   const emailRef = React.useRef();
   // handle the /login endpoint in the future
@@ -64,6 +69,7 @@ export function Login({ navigation }) {
           <Text style={styles.label}>Email</Text>
           <Controller
             name="email"
+            defaultValue=""
             control={control}
             rules={{ required: "This is required" }}
             onFocus={() => {
@@ -86,8 +92,19 @@ export function Login({ navigation }) {
           <Text style={styles.label}>Password</Text>
           <Controller
             name="password"
+            defaultValue=""
             control={control}
-            rules={{ required: "This is required" }}
+            rules={{
+              required: "This is required",
+              minLength: { value: 8, message: "must be at min 8 chars long" },
+              validate: (value) => {
+                return (
+                  [/[a-z]/, /[A-Z]/, /[0-9]/, /[^a-zA-Z0-9]/].every((pattern) =>
+                    pattern.test(value),
+                  ) || "must include lower, upper, number, and special chars"
+                );
+              },
+            }}
             onFocus={() => {
               passwordRef.current.focus;
             }}
@@ -110,8 +127,7 @@ export function Login({ navigation }) {
             title="Login"
             onPress={() => {
               handleSubmit(onSubmit);
-              setValue("");
-              navigation.push("Signup");
+              navigation.navigate("Signup");
             }}
           />
         </View>
