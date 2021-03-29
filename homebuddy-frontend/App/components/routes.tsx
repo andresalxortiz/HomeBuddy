@@ -2,8 +2,6 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
-import { Text } from "react-native";
-
 /**
  * TODO: refactor this so all screens come from one source export default {...}
  */
@@ -14,17 +12,20 @@ import { Signup } from "../screens/signup-screen";
 
 import OnBoardContainer from "../screens/Onboarding/index";
 
-const Stack = createStackNavigator();
+const AuthenticationStack = createStackNavigator();
 
 export function Routes({}) {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Signup" component={Signup} />
-        <Stack.Screen name="Species" component={OnBoardContainer} />
-      </Stack.Navigator>
+      <AuthenticationStack.Navigator screenOptions={{ headerShown: false }}>
+        <AuthenticationStack.Screen name="Home" component={Home} />
+        <AuthenticationStack.Screen name="Login" component={Login} />
+        <AuthenticationStack.Screen name="Signup" component={Signup} />
+        <AuthenticationStack.Screen
+          name="Species"
+          component={OnBoardContainer}
+        />
+      </AuthenticationStack.Navigator>
     </NavigationContainer>
   );
 }
