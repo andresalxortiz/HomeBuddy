@@ -1,19 +1,19 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import Animated from "react-native-reanimated";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { Button } from "../../../components";
 
-const BORDER_RADIUS = 75;
+const BORDER_RADIUS = 65;
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 44,
+    flex: 1,
     backgroundColor: "white",
-    // borderTopRightRadius: 65,
-    // borderTopLeftRadius: 65,
+    borderTopRightRadius: BORDER_RADIUS,
+    borderTopLeftRadius: BORDER_RADIUS,
   },
   subtitle: {
     fontFamily: "Montserrat-SemiBold",

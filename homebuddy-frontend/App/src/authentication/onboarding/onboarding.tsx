@@ -1,7 +1,7 @@
 import React from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import Animated, { multiply } from "react-native-reanimated";
+import Animated, { divide, multiply } from "react-native-reanimated";
 import {
   useValue,
   onScrollEvent,
@@ -11,10 +11,9 @@ import {
 
 import Slide, { SLIDE_HEIGHT } from "./slide";
 import Subslide from "./sub-slide";
+import Dot from "./dot";
 
-interface ComponentNameProps {}
-
-const BORDER_RADIUS = 75;
+const BORDER_RADIUS = 65;
 
 const { width, height } = Dimensions.get("window");
 
@@ -27,16 +26,24 @@ const styles = StyleSheet.create({
   slider: {
     height: SLIDE_HEIGHT,
     // opacity: 0.34,
-    borderBottomLeftRadius: BORDER_RADIUS,
-    borderBottomRightRadius: BORDER_RADIUS,
+    // borderBottomLeftRadius: BORDER_RADIUS,
+    // borderBottomRightRadius: BORDER_RADIUS,
   },
   footer: {
     flex: 1,
   },
   footerContent: {
     flex: 1,
+  },
+  pagination: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 5,
+    width,
+    height: BORDER_RADIUS,
     flexDirection: "row",
-    // backgroundColor: "white",
+    // backgroundColor: "rgba(100, 200, 300, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
@@ -49,21 +56,21 @@ const slides = [
   },
   {
     title: "Impactful",
-    subtitle: "Largy Community of Users",
+    subtitle: "Large Community of Users",
     desc:
-      "You are responsible for their well-being and in being so, you have to change your lifestyle to fit them and their needs in too.",
+      "You are responsible for their well-being and your blah blah blah lorem.",
     color: "#F9CDAD",
   },
   {
     title: "Protection",
     subtitle: "Never Worry outside the Home",
-    desc: "Always know where your Pet is located",
+    desc: "Always know where your Pet is located.",
     color: "#FEC9C9",
   },
   {
     title: "Happiness",
     subtitle: "A Happy Home results in a Happy Pet",
-    desc: "Love your Pet and it'll be your ultimate companion ",
+    desc: "Love your Pet and it'll be your ultimate companion.",
     color: "#FFDA8E",
   },
 ];
@@ -77,7 +84,7 @@ function Onboarding() {
     outputRange: slides.map(slide => slide.color),
   });
   return (
-    <Animated.View style={[styles.container, { backgroundColor }]}>
+    <View style={styles.container}>
       <Animated.View style={[styles.slider, { backgroundColor }]}>
         <Animated.ScrollView
           ref={scroll}
@@ -96,33 +103,46 @@ function Onboarding() {
       </Animated.View>
       <View style={styles.footer}>
         <Animated.View
-          style={[
-            styles.footerContent,
-            {
-              width: width * slides.length,
+          style={{ ...StyleSheet.absoluteFillObject, backgroundColor }}
+        />
+        <View style={styles.footerContent}>
+          <View style={styles.pagination}>
+            {slides.map((_, index) => (
+              <Dot
+                key={index}
+                currentIndex={divide(x, width)}
+                {...{ index, x }}
+              />
+            ))}
+          </View>
+
+          <Animated.View
+            style={{
               flex: 1,
+              flexDirection: "row",
+              width: width * slides.length,
               transform: [{ translateX: multiply(x, -1) }],
-            },
-          ]}
-        >
-          {slides.map(({ subtitle, desc }, index) => (
-            <Subslide
-              key={index}
-              onPress={() => {
-                if (scroll.current) {
-                  scroll.current.scrollTo({
-                    x: width * (index + 1),
-                    animated: true,
-                  });
-                }
-              }}
-              last={index === slides.length - 1}
-              {...{ subtitle, desc }}
-            />
-          ))}
-        </Animated.View>
+            }}
+          >
+            {slides.map(({ subtitle, desc }, index) => (
+              <Subslide
+                key={index}
+                onPress={() => {
+                  if (scroll.current) {
+                    scroll.current.scrollTo({
+                      x: width * (index + 1),
+                      animated: true,
+                    });
+                  }
+                }}
+                last={index === slides.length - 1}
+                {...{ subtitle, desc }}
+              />
+            ))}
+          </Animated.View>
+        </View>
       </View>
-    </Animated.View>
+    </View>
   );
 }
 

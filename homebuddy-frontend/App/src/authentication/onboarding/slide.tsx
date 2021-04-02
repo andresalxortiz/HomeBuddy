@@ -30,7 +30,11 @@ interface SlideProps {
 
 function Slide({ title, middle }: SlideProps) {
   const transform = [
+    // { translateY: (SLIDE_HEIGHT - 100) / 2 },
     { translateY: (SLIDE_HEIGHT - 100) / 2 },
+    // { translateX: -width / 2 },
+    // { translateX: width / 2 },
+    // { translateY: width / 2 - 20 },
     // { translateX: middle ? width / 2 - 200 : null },
   ];
 
