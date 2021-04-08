@@ -1,2 +1,1 @@
-export { default as Onboarding } from "./onboarding";
-export { default as Welcome } from "./welcome";
+export { default } from "./onboarding";

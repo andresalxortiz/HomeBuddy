@@ -1,5 +1,7 @@
 import React from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
+
+import { Text } from "../../components";
 
 const { width, height } = Dimensions.get("window");
 export const SLIDE_HEIGHT = 0.61 * height;
@@ -11,14 +13,6 @@ const styles = StyleSheet.create({
   titleContainer: {
     height: 100,
     justifyContent: "center",
-  },
-  title: {
-    fontSize: 55,
-    lineHeight: 90,
-    fontFamily: "Montserrat-ExtraBold",
-    color: "white",
-    textAlign: "center",
-    fontWeight: "500",
   },
 });
 
@@ -41,7 +35,7 @@ function Slide({ title, middle }: SlideProps) {
   return (
     <View style={styles.container}>
       <View style={[styles.titleContainer, { transform }]}>
-        <Text style={styles.title}>{title}</Text>
+        <Text variant="hero">{title}</Text>
       </View>
     </View>
   );

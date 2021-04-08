@@ -3,9 +3,9 @@
 // export default Routes
 
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import { Onboarding, Welcome } from "./src/authentication/onboarding";
-import { LoadAssets } from "./components";
+import { AuthenticationNavigator } from "./src/authentication";
+import { LoadAssets, theme } from "./src/components";
+import { ThemeProvider } from "@shopify/restyle";
 
 const fonts = {
   "Montserrat-ExtraBold": require("../assets/fonts/Montserrat-ExtraBold.ttf"),
@@ -13,22 +13,20 @@ const fonts = {
   "Montserrat-Medium": require("../assets/fonts/Montserrat-Medium.ttf"),
   "Montserrat-Regular": require("../assets/fonts/Montserrat-Regular.ttf"),
   "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
-};
 
-const AuthenticationStack = createStackNavigator();
-function AuthenticationNavigator() {
-  return (
-    <AuthenticationStack.Navigator headerMode="none">
-      <AuthenticationStack.Screen name="Onboarding" component={Onboarding} />
-      <AuthenticationStack.Screen name="Welcome" component={Welcome} />
-    </AuthenticationStack.Navigator>
-  );
-}
+  "Iter-Light-300": require("../assets/fonts/Inter-Light.ttf"),
+  "Iter-Regular-400": require("../assets/fonts/Inter-Regular.ttf"),
+  "Iter-Medium-500": require("../assets/fonts/Inter-Medium.ttf"),
+  "Iter-SemiBold-600": require("../assets/fonts/Inter-SemiBold.ttf"),
+  "Iter-Bold-700": require("../assets/fonts/Inter-Bold.ttf"),
+};
 
 export default function App() {
   return (
-    <LoadAssets {...{ fonts }}>
-      <AuthenticationNavigator />
-    </LoadAssets>
+    <ThemeProvider {...{ theme }}>
+      <LoadAssets {...{ fonts }}>
+        <AuthenticationNavigator />
+      </LoadAssets>
+    </ThemeProvider>
   );
 }

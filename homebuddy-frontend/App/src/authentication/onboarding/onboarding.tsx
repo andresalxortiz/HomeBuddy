@@ -12,6 +12,8 @@ import {
 import Slide, { SLIDE_HEIGHT } from "./slide";
 import Subslide from "./sub-slide";
 import Dot from "./dot";
+import { theme } from "../../components";
+import { Routes, StackNavigationProps } from "../../components/navigation";
 
 const BORDER_RADIUS = 65;
 
@@ -39,7 +41,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     zIndex: 5,
     width,
-    height: BORDER_RADIUS,
+    height: theme.borderRadii.xl,
     flexDirection: "row",
     // backgroundColor: "rgba(100, 200, 300, 0.5)",
     justifyContent: "center",
@@ -75,7 +77,9 @@ const slides = [
   },
 ];
 
-function Onboarding() {
+function Onboarding({
+  navigation,
+}: StackNavigationProps<Routes, "Onboarding">) {
   const scroll = React.useRef<ScrollView>(null);
   // const x = useValue(0);
   const { scrollHandler, x } = useScrollHandler();
@@ -124,21 +128,25 @@ function Onboarding() {
               transform: [{ translateX: multiply(x, -1) }],
             }}
           >
-            {slides.map(({ subtitle, desc }, index) => (
-              <Subslide
-                key={index}
-                onPress={() => {
-                  if (scroll.current) {
-                    scroll.current.scrollTo({
-                      x: width * (index + 1),
-                      animated: true,
-                    });
-                  }
-                }}
-                last={index === slides.length - 1}
-                {...{ subtitle, desc }}
-              />
-            ))}
+            {slides.map(({ subtitle, desc }, index) => {
+              const last = index === slides.length - 1;
+              return (
+                <Subslide
+                  key={index}
+                  onPress={() => {
+                    if (last) {
+                      navigation.navigate("Welcome");
+                    } else {
+                      scroll.current.scrollTo({
+                        x: width * (index + 1),
+                        animated: true,
+                      });
+                    }
+                  }}
+                  {...{ subtitle, desc, last }}
+                />
+              );
+            })}
           </Animated.View>
         </View>
       </View>
