@@ -1,11 +1,14 @@
-import React from "react";
+import React, { ReactHTML, ReactNode, Ref } from "react";
 import {
   StyleProp,
   StyleSheet,
   TextInput as RNTextInput,
   TextInputProps as RNTextInputProps,
 } from "react-native";
-import { Box } from "../theme";
+
+import { Feather as Icon } from "@expo/vector-icons";
+
+import { Box, theme } from "../../components";
 
 const styles = StyleSheet.create({
   customBorder: {
@@ -15,15 +18,19 @@ const styles = StyleSheet.create({
 
 interface TextInputProps extends RNTextInputProps {
   placeholder: string;
+  icon?: "eye" | "eye-off";
   borderBottomWidth?: StyleProp<number>;
   placeHolderStyle?: StyleProp<string>;
   secureTextInput?: StyleProp<boolean>;
+  refs?: Ref<any>;
 }
 
 function TextInput({
   placeholder,
+  icon,
   borderBottomWidth,
   secureTextEntry,
+  ...props
 }: TextInputProps) {
   return (
     <Box
@@ -38,8 +45,13 @@ function TextInput({
       <Box flex={1}>
         <RNTextInput
           underlineColorAndroid="transparent"
+          onBlur={props.onBlur}
           {...{ placeholder, borderBottomWidth, secureTextEntry }}
+          {...props}
         />
+      </Box>
+      <Box padding="s">
+        <Icon name={icon} size={14} color={theme.colors.shade} />
       </Box>
     </Box>
   );
