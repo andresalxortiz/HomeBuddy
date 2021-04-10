@@ -11,7 +11,6 @@ interface FormData {
 }
 
 function Login() {
-  const [secureTextEntry, setSecureTextEntry] = React.useState(false);
   const emailRef = React.useRef(null);
   const passwordRef = React.useRef(null);
 
@@ -27,7 +26,7 @@ function Login() {
   });
 
   // check to see if we're getting data
-  const onSubmit = handleSubmit(({ email, password }) => {
+  const onSubmit = handleSubmit(({ email, password }: FormData) => {
     Alert.alert("Data", `Email: ${email}\nPassword: ${password}`);
   });
 
@@ -66,55 +65,66 @@ function Login() {
         </Box>
         <Box marginBottom="l">
           <Controller
-            render={({ field: { onBlur, onChange, value } }) => (
+            render={({ field: { onBlur, onChange, value, ref } }) => (
               <TextInput
                 autoCapitalize="none"
                 autoCompleteType="email"
                 autoCorrect={false}
                 keyboardType="email-address"
                 onBlur={onBlur}
-                onChange={onChange}
+                onChangeText={value => onChange(value)}
                 onSubmitEditing={() => passwordRef.current?.focus()}
                 returnKeyType="next"
                 textAlignVertical="center"
                 placeholder="Email"
                 textContentType="emailAddress"
                 value={value}
-                refs={emailRef}
+                inputRef={emailRef}
+                onFocus={() => {
+                  emailRef.current?.focus;
+                }}
               />
             )}
             control={control}
             name="email"
-            onFocus={() => {
-              emailRef.current.focus;
-            }}
+            rules={{ required: true }}
           />
+          {errors.email && (
+            <Text style={{ color: "red", marginTop: 5 }}>Email required.</Text>
+          )}
         </Box>
 
         <Controller
-          render={({ onBlur, onChange, value, ...props }) => (
+          render={({
+            field: { onBlur, onChange, value, ref },
+            fieldState: { isTouched },
+          }) => (
             <TextInput
-              icon="eye"
+              icon={value ? "eye-off" : "eye"}
               autoCapitalize="none"
               autoCompleteType="password"
               autoCorrect={false}
               onBlur={onBlur}
-              onChange={onChange}
+              onChangeText={value => onChange(value)}
               onSubmitEditing={onSubmit}
               returnKeyType="done"
               secureTextEntry={true}
               placeholder="Enter your Password"
               textContentType="password"
-              // value={passwor}
-              refs={passwordRef}
+              value={value}
+              inputRef={ref}
+              onFocus={() => {
+                passwordRef.current?.focus;
+              }}
             />
           )}
           control={control}
           name="password"
-          onFocus={() => {
-            passwordRef.current.focus;
-          }}
+          rules={{ required: true }}
         />
+        {errors.password && (
+          <Text style={{ color: "red", marginTop: 5 }}>Password required.</Text>
+        )}
 
         <Box
           flexDirection="row"

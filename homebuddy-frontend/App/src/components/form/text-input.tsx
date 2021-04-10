@@ -22,7 +22,7 @@ interface TextInputProps extends RNTextInputProps {
   borderBottomWidth?: StyleProp<number>;
   placeHolderStyle?: StyleProp<string>;
   secureTextInput?: StyleProp<boolean>;
-  refs?: Ref<any>;
+  inputRef?: Ref<any>;
 }
 
 function TextInput({
