@@ -1,6 +1,7 @@
 import React, { SyntheticEvent } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Alert } from "react-native";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 import { Box, Button, Container, Text } from "../../components";
 import TextInput from "../../components/form/text-input";
@@ -11,8 +12,8 @@ interface FormData {
 }
 
 function Login() {
-  const emailRef = React.useRef<HTMLInputElement | null>(null);
-  const passwordRef = React.useRef<HTMLInputElement | null>(null);
+  const emailRef = React.useRef<typeof TextInput | null>(null);
+  const passwordRef = React.useRef<typeof TextInput | null>(null);
 
   const {
     control,
@@ -67,9 +68,16 @@ function Login() {
             Sign in to your account
           </Text>
         </Box>
-        <Box marginBottom="l">
-          <Controller
-            render={({ field: { onBlur, onChange, value, ref } }) => (
+        <Controller
+          render={({ field: { onBlur, onChange, value, ref } }) => (
+            <Box
+              marginBottom="l"
+              // style={{
+              //   borderColor: emailRef ? "rgba(7, 90, 81, 0.34)" : "transparent",
+              //   borderWidth: value ? 2 : 0,
+              //   borderRadius: 4,
+              // }}
+            >
               <TextInput
                 autoCapitalize="none"
                 autoCompleteType="email"
@@ -83,71 +91,74 @@ function Login() {
                 placeholder="Email"
                 textContentType="emailAddress"
                 value={value}
-                inputRef={emailRef}
+                ref={emailRef}
+                onFocus={() => emailRef.current?.focus()}
               />
-            )}
-            control={control}
-            name="email"
-            rules={{ required: true }}
-          />
-          {errors.email && (
-            <Text style={{ color: "red", marginTop: 5 }}>Email required.</Text>
+              {errors.email && (
+                <Text style={{ color: "red", marginTop: 5 }}>
+                  Email required.
+                </Text>
+              )}
+            </Box>
           )}
-        </Box>
+          control={control}
+          name="email"
+          rules={{ required: true }}
+        />
 
         <Controller
           render={({
             field: { onBlur, onChange, value, ref },
             fieldState: { isTouched },
           }) => (
-            <TextInput
-              icon={value ? "eye-off" : "eye"}
-              autoCapitalize="none"
-              autoCompleteType="password"
-              autoCorrect={false}
-              onBlur={onBlur}
-              onChangeText={value => onChange(value)}
-              onSubmitEditing={onSubmit}
-              returnKeyType="done"
-              secureTextEntry={true}
-              placeholder="Enter your Password"
-              textContentType="password"
-              value={value}
-              inputRef={passwordRef}
-            />
+            <Box>
+              <TextInput
+                icon={value ? "eye-off" : "eye"}
+                autoCapitalize="none"
+                autoCompleteType="password"
+                autoCorrect={false}
+                onBlur={onBlur}
+                onChangeText={value => onChange(value)}
+                onSubmitEditing={onSubmit}
+                returnKeyType="done"
+                secureTextEntry={true}
+                placeholder="Enter your Password"
+                textContentType="password"
+                value={value}
+                ref={passwordRef}
+                selectTextOnFocus={true}
+              />
+              {errors.password && (
+                <Text style={{ color: "red", marginTop: 5 }}>
+                  Password required.
+                </Text>
+              )}
+            </Box>
           )}
           control={control}
           name="password"
           rules={{ required: true }}
         />
-        {errors.password && (
-          <Text style={{ color: "red", marginTop: 5 }}>Password required.</Text>
-        )}
 
         <Box
           flexDirection="row"
-          // text
-
           justifyContent="flex-end"
           alignContent="flex-end"
-          // justifyContent="space-evenly"
         >
-          <Button
-            variant="transparent"
-            onPress={() => alert("Password Reseted")}
-          >
+          <TouchableWithoutFeedback onPress={() => alert("Password Reseted")}>
             <Text
               color="primaryGreen"
               paddingLeft="xl"
               marginLeft="xxl"
+              marginTop="m"
               textAlign="right"
               variant="forgetPassword"
             >
               Forgot password?
             </Text>
-          </Button>
+          </TouchableWithoutFeedback>
         </Box>
-        <Box alignItems="center" marginTop="m">
+        <Box alignItems="center" marginTop="l">
           <Button variant="primary" onPress={onSubmit} label="Continue" />
         </Box>
 

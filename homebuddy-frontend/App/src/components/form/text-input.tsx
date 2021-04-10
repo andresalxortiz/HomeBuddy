@@ -1,4 +1,4 @@
-import React, { ReactHTML, ReactNode, Ref } from "react";
+import React, { forwardRef, RefObject } from "react";
 import {
   StyleProp,
   StyleSheet,
@@ -22,39 +22,45 @@ interface TextInputProps extends RNTextInputProps {
   borderBottomWidth?: StyleProp<number>;
   placeHolderStyle?: StyleProp<string>;
   secureTextInput?: StyleProp<boolean>;
-  inputRef?: Ref<any>;
 }
 
-function TextInput({
-  placeholder,
-  icon,
-  borderBottomWidth,
-  secureTextEntry,
-  ...props
-}: TextInputProps) {
-  return (
-    <Box
-      flexDirection="row"
-      height={48}
-      alignItems="center"
-      borderRadius="s"
-      backgroundColor="offgrey"
-      padding="s"
-      // borderWidth={1}
-    >
-      <Box flex={1}>
-        <RNTextInput
-          underlineColorAndroid="transparent"
-          onBlur={props.onBlur}
-          {...{ placeholder, borderBottomWidth, secureTextEntry }}
-          {...props}
-        />
+const TextInput = React.forwardRef(
+  (
+    {
+      placeholder,
+      icon,
+      borderBottomWidth,
+      secureTextEntry,
+      ...props
+    }: TextInputProps,
+    ref,
+  ) => {
+    return (
+      <Box
+        flexDirection="row"
+        height={48}
+        alignItems="center"
+        borderRadius="s"
+        backgroundColor="offgrey"
+        padding="s"
+        // borderWidth={1}
+      >
+        <Box flex={1}>
+          {/* // @ts-ignore */}
+          <RNTextInput
+            underlineColorAndroid="transparent"
+            onBlur={props.onBlur}
+            {...{ placeholder, borderBottomWidth, secureTextEntry }}
+            {...{ ref }}
+            {...props}
+          />
+        </Box>
+        <Box padding="s">
+          <Icon name={icon} size={14} color={theme.colors.shade} />
+        </Box>
       </Box>
-      <Box padding="s">
-        <Icon name={icon} size={14} color={theme.colors.shade} />
-      </Box>
-    </Box>
-  );
-}
+    );
+  },
+);
 
 export default TextInput;
