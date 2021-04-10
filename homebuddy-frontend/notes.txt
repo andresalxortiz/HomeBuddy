@@ -1,0 +1,4 @@
+sources from errors I've ran into (react native related)
+// This solves the Unable to resolve "../../App" from "node_modules\expo\AppEntry.js"
+https://github.com/GeekyAnts/vue-native-core/issues/183
+"sourceExts": [ "js", "json", "ts", "tsx", "jsx", "vue"]
