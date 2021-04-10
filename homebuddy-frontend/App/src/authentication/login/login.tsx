@@ -1,4 +1,4 @@
-import React from "react";
+import React, { SyntheticEvent } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Alert } from "react-native";
 
@@ -6,17 +6,19 @@ import { Box, Button, Container, Text } from "../../components";
 import TextInput from "../../components/form/text-input";
 
 interface FormData {
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
 }
 
 function Login() {
-  const emailRef = React.useRef(null);
-  const passwordRef = React.useRef(null);
+  const emailRef = React.useRef<HTMLInputElement | null>(null);
+  const passwordRef = React.useRef<HTMLInputElement | null>(null);
 
   const {
     control,
     handleSubmit,
+    reset,
+    watch,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
@@ -28,6 +30,8 @@ function Login() {
   // check to see if we're getting data
   const onSubmit = handleSubmit(({ email, password }: FormData) => {
     Alert.alert("Data", `Email: ${email}\nPassword: ${password}`);
+    // lets clear the form values
+    reset();
   });
 
   return (
@@ -80,9 +84,6 @@ function Login() {
                 textContentType="emailAddress"
                 value={value}
                 inputRef={emailRef}
-                onFocus={() => {
-                  emailRef.current?.focus;
-                }}
               />
             )}
             control={control}
@@ -112,10 +113,7 @@ function Login() {
               placeholder="Enter your Password"
               textContentType="password"
               value={value}
-              inputRef={ref}
-              onFocus={() => {
-                passwordRef.current?.focus;
-              }}
+              inputRef={passwordRef}
             />
           )}
           control={control}
